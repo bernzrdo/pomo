@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Pomo</title>
+    </head>
+    <body>
+
+        <main class="home" style="display: none;">
+
+            <img class="logo app-drag" src="assets/logo.svg" alt="Pomo" draggable="false">
+
+            <div class="title-bar">
+                <div></div>
+                <div class="controls"></div>
+            </div>
+
+            <div class="modes">
+
+                <button class="focus">
+                    <!-- hourglass -->
+                    <div class="info">
+                        <div class="name">Focus</div>
+                        <div class="duration">25 min</div>
+                    </div>
+                </button>
+
+                <button class="short-break">
+                    <!-- hourglass -->
+                    <div class="info">
+                        <div class="name">Short break</div>
+                        <div class="duration">5 min</div>
+                    </div>
+                </button>
+
+                <button class="long-break">
+                    <!-- hourglass -->
+                    <div class="info">
+                        <div class="name">Long break</div>
+                        <div class="duration">15 min</div>
+                    </div>
+                </button>
+
+            </div>
+
+            <div class="footer"></div>
+
+            <div class="logs"></div>
+
+        </main>
+
+        <main class="timer" style="display: none;">
+            
+            <div class="time app-drag"></div>
+
+            <div class="title-bar">
+                <div class="title">
+                    <img src="assets/icon-stroke.svg" alt="Pomo" draggable="false">
+                    Pomo
+                </div>
+                <div class="controls"></div>
+            </div>
+
+            <div class="progress">
+                <div class="bar"></div>
+            </div>
+
+            <div class="mode"></div>
+
+            <div class="action">
+                <button class="pause-btn">
+                    <!-- pause -->
+                    Pause
+                </button>
+                <button class="resume-btn" style="display: none;">
+                    <!-- resume -->
+                    Resume
+                </button>
+                <button class="stop-btn">
+                    <!-- stop -->
+                    Stop
+                </button>
+            </div>
+
+            <div class="footer"></div>
+
+        </main>
+
+        <main class="tiny-timer" style="display: none;">
+
+            <div class="time app-drag"></div>
+
+            <div class="progress">
+                <div class="bar"></div>
+            </div>
+
+        </main>
+
+    </body>
+</html>

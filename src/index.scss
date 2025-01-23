@@ -1,0 +1,434 @@
+@use 'sass:list';
+
+* {
+    user-select: none;
+    &::-webkit-scrollbar { display: none }
+}
+
+body {
+
+    margin: 0;
+    
+    font-family: 'Fredoka', system-ui, sans-serif;
+    font-size: 16px;
+    
+    color: #fff;
+    // background-color: #0003;
+
+    &.dragging * { cursor: grabbing !important }
+
+}
+
+button {
+
+    font-family: inherit;
+    font-size: inherit;
+    
+    color: inherit;
+    background-color: transparent;
+    
+    border: 0;
+    cursor: pointer;
+
+}
+
+main {
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #d13834;
+    border-radius: 50px;
+
+    padding: 25px;
+    padding-top: 0;
+
+    .app-drag { cursor: grab }
+
+    .title-bar {
+    
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        width: calc(100% - 50px);
+    
+        display: flex;
+        justify-content: space-between;
+
+        .title {
+            
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            font-weight: 600;
+            font-size: 1.3em;
+            color: #fffa;
+
+            img {
+                width: 1em;
+                height: 1em;
+            }
+
+        }
+    
+        .controls {
+    
+            display: flex;
+    
+            button {
+    
+                display: flex;
+                width: 30px;
+                height: 30px;
+    
+                border-radius: 10px;
+    
+                color: #fff8;
+                transition: color .2s, background-color .2s;
+                &:hover {
+                    color: #fff;
+                    background-color: #fff2;
+                }
+    
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+    
+            }
+    
+    
+        }
+    
+    }
+
+    .footer {
+
+        display: flex;
+        gap: 10px;
+        color: #fffa;
+        font-size: .8em;
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            &:hover { text-decoration: underline }
+        }
+        
+    }
+
+}
+
+.home {
+
+    $logoOffset: 150px;
+
+    margin-top: 150px;
+    padding-bottom: 0;
+    gap: 25px;
+
+    .logo {
+        height: 200px;
+        margin-top: -$logoOffset;
+    }
+
+    .modes {
+
+        display: flex;
+        gap: 15px;
+
+        button {
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            border: 3px solid #fff;
+            border-radius: 5000px;
+            width: 180px;
+            padding: 10px 15px;
+
+            transition: background-color .2s;
+            &:hover { background-color: #fff2 }
+
+            &.highlight {
+
+                $highlistOffset: 20px;
+
+                &::before, &::after {
+
+                    content: '';
+
+                    position: absolute;
+                    height: calc(100% + 2 * $highlistOffset);
+                    aspect-ratio: 1;
+                    
+                    background-image: url('assets/highlight.svg');
+                    background-size: contain;
+
+                }
+
+                &::before { left: -$highlistOffset }
+
+                &::after {
+                    right: -$highlistOffset;
+                    transform: rotate(180deg);
+                }
+
+            }
+
+            .icon {
+                width: 30px;
+                height: 30px;
+            }
+
+            .info {
+
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+
+                .name { font-size: 1.2em }
+
+                .duration {
+                    font-size: .8em;
+                    color: #fffa;
+                }
+
+            }
+
+        }
+
+    }
+
+    .logs {
+
+        display: flex;
+        flex-direction: column;
+
+        font-family: 'Geist Mono', monospace;
+        color: #000;
+        background-color: #fff;
+        padding: 15px 25px;
+
+        width: 260px;
+        height: 150px;
+        margin-bottom: -150px;
+        overflow: auto;
+
+        $count: 75;
+        $size: calc((260px + 50px) / $count);
+        $points: ();
+
+        @for $i from 0 through $count - 1 {
+            $offset: $size * $i;
+            $points: list.append($points, #{$offset} #{$size}, comma);
+            $points: list.append($points, #{$offset + calc($size / 2)} 0, comma);
+        }
+        $points: list.append($points, 100% #{$size}, comma);
+
+        $points: list.append($points, 100% #{calc(100% - $size)}, comma);
+        @for $i from $count - 1 through 0 {
+            $offset: $size * $i;
+            $points: list.append($points, #{$offset + calc($size / 2)} 100%, comma);
+            $points: list.append($points, #{$offset} #{calc(100% - $size)}, comma);
+        }
+
+        clip-path: polygon($points);
+
+        .title { font-size: 1.5em }
+
+        .log {
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .mode {
+                flex-grow: 1;
+                .name { font-size: 1.2em }
+                .duration { font-size: .8em }
+            }
+
+            .time { text-align: right }
+
+        }
+
+        .end {
+            text-align: center;
+            font-size: .8em;
+            padding-top: 10px;
+            color: #0008;
+        }
+        
+        .no-logs {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            text-align: center;
+            color: #0008;
+        }
+
+    }
+
+}
+
+.time {
+
+    position: relative;
+
+    &.ended {
+        animation: blink 1s infinite linear;
+        @keyframes blink {
+              0% { opacity: 0 }
+             49% { opacity: 0 }
+             50% { opacity: 1 }
+            100% { opacity: 1 }
+        }
+
+    }
+
+    .stroke, .fill {
+        display: flex;
+        div { background-image: url('assets/numbers.svg') }
+    }
+
+    .fill {
+        position: absolute;
+        .fade { opacity: .5 }
+    }
+
+}
+
+@mixin time($timeScale){
+
+    .time {
+        
+        position: relative;
+        margin-top: -55px * $timeScale;
+        
+        .stroke div, .fill div {
+
+            width: 100px * $timeScale;
+            height: 100px * $timeScale;
+            background-size: 1100px * $timeScale;
+
+            &:not(:first-child) { margin-left: -45px * $timeScale }
+
+            &[number="0"] { background-position-x: 0 }
+            &[number="1"] { background-position-x: -100px * $timeScale }
+            &[number="2"] { background-position-x: -200px * $timeScale }
+            &[number="3"] { background-position-x: -300px * $timeScale }
+            &[number="4"] { background-position-x: -400px * $timeScale }
+            &[number="5"] { background-position-x: -500px * $timeScale }
+            &[number="6"] { background-position-x: -600px * $timeScale }
+            &[number="7"] { background-position-x: -700px * $timeScale }
+            &[number="8"] { background-position-x: -800px * $timeScale }
+            &[number="9"] { background-position-x: -900px * $timeScale }
+
+            &.colon {
+                background-position-x: -1000px * $timeScale;
+                margin-left: -60px * $timeScale;
+                margin-right: -15px * $timeScale;
+            }
+
+        }
+
+        .fill div { background-position-y: -100px * $timeScale }
+
+    }
+
+}
+
+.progress {
+        
+    position: relative;
+
+    background-color: #fff3;
+    border-radius: 5000px;
+
+    overflow: hidden;
+
+    .bar {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 5000px;
+        // transform: translateX(-20%);
+    }
+
+}
+
+.timer {
+
+    gap: 10px;
+    margin-top: 150px;
+
+    @include time(1.4);
+
+    .progress {
+        width: 320px;
+        height: 10px;
+        margin-top: -15px;
+    }
+
+    .mode {
+        font-size: 1.8em;
+        font-weight: 600;
+    }
+
+    .action {
+
+        display: flex;
+        gap: 10px;
+
+        button {
+            
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 5px 15px;
+            border: 3px solid #fff;
+            border-radius: 5000px;
+
+            font-size: 1.3em;
+
+            transition: background-color .2s;
+            &:hover { background-color: #fff2 }
+
+            svg {
+                width: 1em;
+                height: 1em;
+                flex-shrink: 0;
+            }
+
+        }
+
+    }
+
+}
+
+.tiny-timer {
+
+    @include time(.5);
+    padding: 15px;
+    margin-top: 55px * .5;
+
+    transition: opacity .5s;
+    &.fade { opacity: .5 }
+
+    .progress {
+        width: 120px;
+        height: 5px;
+    }
+
+}
