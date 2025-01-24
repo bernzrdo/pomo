@@ -7,7 +7,7 @@ import { AutoUnpackNativesPlugin } from '@electron-forge/plugin-auto-unpack-nati
 import { WebpackPlugin } from '@electron-forge/plugin-webpack';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
-
+import { version } from './package.json';
 import { mainConfig } from './webpack.main.config';
 import { rendererConfig } from './webpack.renderer.config';
 
@@ -19,17 +19,31 @@ const config: ForgeConfig = {
     rebuildConfig: {},
     makers: [
         new MakerSquirrel({
-            // TODO: Add .ico url
-            // iconUrl: '',
+            authors: 'bernzrdo',
+            iconUrl: 'https://raw.githubusercontent.com/bernzrdo/pomo/refs/heads/main/src/assets/icon.png',
             // setupIcon: 'src/assets/icon.png'
         }),
         new MakerZIP({}, ['darwin']),
-        new MakerRpm({
-            options: { icon: 'src/assets/icon.png' }
-        }),
-        new MakerDeb({
-            options: { icon: 'src/assets/icon.png' }
-        })
+        new MakerRpm({ options: {
+            categories: ['Utility'],
+            icon: 'src/assets/icon.png',
+            genericName: 'Time Management Software',
+            name: 'pomo',
+            productName: 'Pomo',
+            description: 'Time management software',
+            productDescription: 'Open-source time management software based on the Pomodoro Technique with a focus on design.',
+            version: `v${version}`
+        }}),
+        new MakerDeb({ options: {
+            categories: ['Utility'],
+            icon: 'src/assets/icon.png',
+            genericName: 'Time Management Software',
+            name: 'pomo',
+            productName: 'Pomo',
+            description: 'Time management software',
+            productDescription: 'Open-source time management software based on the Pomodoro Technique with a focus on design.',
+            version: `v${version}`
+        }})
     ],
     plugins: [
         new AutoUnpackNativesPlugin({}),
