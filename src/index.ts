@@ -6,6 +6,10 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if(require('electron-squirrel-startup'))
     app.quit();
 
+function isDev(){
+    return process.env['WEBPACK_SERVE'] === 'true';
+}
+
 function createWindow(){
 
     const win = new BrowserWindow({
@@ -17,11 +21,11 @@ function createWindow(){
         fullscreenable: false,
         webPreferences: {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-            devTools: false
-        },
+            devTools: isDev()
+        }
     });
 
-    // win.webContents.openDevTools();
+    if(isDev()) win.webContents.openDevTools();
 
     Menu.setApplicationMenu(Menu.buildFromTemplate([]));
 
@@ -97,7 +101,7 @@ ipcMain.on('set-always-on-top', (e, state: boolean)=>{
     
     win.setAlwaysOnTop(state);
     if(state)
-        onTop[win.id] = setInterval(()=>win.moveTop());
+        onTop[win.id] = setInterval(()=>!win.isDestroyed() && win.moveTop());
     else
         clearInterval(onTop[win.id]);
     

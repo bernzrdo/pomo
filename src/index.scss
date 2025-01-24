@@ -68,9 +68,13 @@ main {
             font-size: 1.3em;
             color: #fffa;
 
-            img {
+            .logo {
                 width: 1em;
                 height: 1em;
+                background-image: url('assets/icon-stroke.svg');
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
             }
 
         }
@@ -132,7 +136,12 @@ main {
     gap: 25px;
 
     .logo {
+        width: 280px;
         height: 200px;
+        background-image: url('assets/logo.svg');
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
         margin-top: -$logoOffset;
     }
 
